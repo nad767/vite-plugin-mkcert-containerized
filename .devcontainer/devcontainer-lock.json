@@ -1,0 +1,44 @@
+{
+  "features": {
+    "ghcr.io/aqua/devcontainer-antigravity-cli/antigravity-cli:1.0.2": {
+      "version": "1.0.2",
+      "resolved": "ghcr.io/aqua/devcontainer-antigravity-cli/antigravity-cli@sha256:d7ae5139e62443070175cae13c275ae08efa8d89d6d5d432f96f3f9df51c2030",
+      "integrity": "sha256:d7ae5139e62443070175cae13c275ae08efa8d89d6d5d432f96f3f9df51c2030"
+    },
+    "ghcr.io/devcontainers-community/features/direnv:1.0.0": {
+      "version": "1.0.0",
+      "resolved": "ghcr.io/devcontainers-community/features/direnv@sha256:e0266877bb3935f243eaf70b3192182170f4f8c5cd86108e2509de2eff082ef5",
+      "integrity": "sha256:e0266877bb3935f243eaf70b3192182170f4f8c5cd86108e2509de2eff082ef5"
+    },
+    "ghcr.io/devcontainers-extra/features/ripgrep:1.0.15": {
+      "version": "1.0.15",
+      "resolved": "ghcr.io/devcontainers-extra/features/ripgrep@sha256:0dfc0ac16f0d6aa754d006a138fd4cb4a62c245d308306edf8ad1b7a80b8fdf2",
+      "integrity": "sha256:0dfc0ac16f0d6aa754d006a138fd4cb4a62c245d308306edf8ad1b7a80b8fdf2"
+    },
+    "ghcr.io/devcontainers/features/node:2.1.0": {
+      "version": "2.1.0",
+      "resolved": "ghcr.io/devcontainers/features/node@sha256:586c9a6f7dd40bd3ba2cd41e7f2f88dcc31fbe5d1442afcbf07ffbc66b686857",
+      "integrity": "sha256:586c9a6f7dd40bd3ba2cd41e7f2f88dcc31fbe5d1442afcbf07ffbc66b686857"
+    },
+    "ghcr.io/nad767/features/better-persistence:0.0.5": {
+      "version": "0.0.5",
+      "resolved": "ghcr.io/nad767/features/better-persistence@sha256:229de365140e8be3933448b6497d8067878cec329f24d1e8236028cace9d7033",
+      "integrity": "sha256:229de365140e8be3933448b6497d8067878cec329f24d1e8236028cace9d7033"
+    },
+    "ghcr.io/nad767/features/cdp-proxy:0.0.19": {
+      "version": "0.0.19",
+      "resolved": "ghcr.io/nad767/features/cdp-proxy@sha256:4ee103aab362ef5631d4ab50f6e6e6c255a2c5f1b8857c1116f9dd46147e57c6",
+      "integrity": "sha256:4ee103aab362ef5631d4ab50f6e6e6c255a2c5f1b8857c1116f9dd46147e57c6"
+    },
+    "ghcr.io/nad767/features/config-git:0.0.46": {
+      "version": "0.0.46",
+      "resolved": "ghcr.io/nad767/features/config-git@sha256:a1baadf8d2afe81e948dcc5302bb28351873157dc51564f11792bf55803b2b6f",
+      "integrity": "sha256:a1baadf8d2afe81e948dcc5302bb28351873157dc51564f11792bf55803b2b6f"
+    },
+    "ghcr.io/nad767/features/synchronizer:0.0.44": {
+      "version": "0.0.44",
+      "resolved": "ghcr.io/nad767/features/synchronizer@sha256:5d544eb50f4099ef6575e1978c15820813ac42cc2b3d7f35aa2bf2f44a5f6bdd",
+      "integrity": "sha256:5d544eb50f4099ef6575e1978c15820813ac42cc2b3d7f35aa2bf2f44a5f6bdd"
+    }
+  }
+}

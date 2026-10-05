@@ -1,0 +1,63 @@
+{
+    "name": "vite-plugin-mkcert-containerized",
+    "image": "mcr.microsoft.com/devcontainers/base:trixie",
+    "features": {
+        // Install `antigravity-cli`.
+        "ghcr.io/aqua/devcontainer-antigravity-cli/antigravity-cli:1.0.2": { },
+
+        // Install nodejs and npm.
+        "ghcr.io/devcontainers/features/node:2.1.0": {
+            "version": "26.10.0",
+            "npmVersion": "12.2.0"
+        },
+
+        // Install `direnv` to load `.envrc` files (and in turn `.env` files) into the shell environment, so they can be seen by `.npmrc`.
+        // Note: `ghcr.io/devcontainers-extra/features/direnv` didn't load the `.envrc` even on `direnv allow`.
+        "ghcr.io/devcontainers-community/features/direnv:1.0.0": { },
+
+        // Install `ripgrep` (`rg`), which is commonly used by `GPT` agents.
+        "ghcr.io/devcontainers-extra/features/ripgrep:1.0.15": { },
+
+        // Private features.
+        // Authentication to `ghcr.io` is made during image build, using the **host** credentials.
+        // Being logged into the correct `github.com` account in `git` on the host should be sufficient.
+        // If that fails, use `docker login ghcr.io -u <username> -p <CLASSIC_PAT>`.
+        "ghcr.io/nad767/features/better-persistence:0.0.5": { },
+        "ghcr.io/nad767/features/config-git:0.0.46": {
+            "credentialHost": "https://github.com",
+            "credentialUsername": "${localEnv:GITHUB_USER:nad767}",
+            "userName": "${localEnv:GIT_USER_NAME:nad767}",
+            "userEmail": "${localEnv:GIT_USER_EMAIL:nad767@gmail.com}"
+        },
+        "ghcr.io/nad767/features/synchronizer:0.0.44": {
+            "mountedWorkspace": "/workspaceMounted",
+            "clonedWorkspace": "/workspaceCloned",
+            "excludes": "node_modules,.logs",
+            "monoliths": ".git"
+        },
+        "ghcr.io/nad767/features/cdp-proxy:0.0.19": {
+            "logsDir": ".logs"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "DavidAnson.vscode-markdownlint",
+                "docker.docker", // Adds IDE features to `Dockerfile`s.
+                "foxundermoon.shell-format",
+                "github.vscode-github-actions",
+                "google.google-antigravity",
+                "mutantdino.resourcemonitor",
+                "redhat.vscode-xml",
+                "redhat.vscode-yaml",
+                "salesforce.sfdocs-markdown-assistant"
+            ]
+        }
+    },
+    "forwardPorts": [ 3500 ],
+    "remoteUser": "root",
+    "workspaceFolder": "/${localWorkspaceFolderBasename}.cpy",
+
+    // Run `direnv allow` so `.envrc` files (and in turn `.env` files) are loaded into the shell runtime. Also, install `npm-check-updates`.
+    "postCreateCommand": "[ -f .envrc ] && direnv allow || echo 'No .envrc file found; skipping `direnv allow`.'; npm i -g npm-check-updates@latest"
+}

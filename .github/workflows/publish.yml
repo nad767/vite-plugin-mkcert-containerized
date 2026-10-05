@@ -1,0 +1,181 @@
+name: Publish
+description: Stage and publish `packages/core` privately to `ghp` (GitHub Packages) and publicly to `npmjs` (official npm registry).
+
+on:
+  # Make workflow directly invokable (from the Actions tab or from its dedicated API endpoint).
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: "Default npm registry name or alias list for targets that omit `registry` (for example: 'ghp', 'npmjs', or 'ghp, npmjs')"
+        type: string
+        required: false
+        default: ghp
+
+      ghp_scope:
+        description: GitHub Packages scope to publish under. Tolerant to having/not-having '@' prefix. Defaults to '<repo-owner>'.
+        type: string
+        required: false
+        # We cannot use a default value here because `github.repository_owner` is not available in the `on.workflow_dispatch.inputs` context.
+
+      tag:
+        description: npm dist-tag to publish under
+        type: string
+        required: false
+        default: latest
+
+      stage_to_npmjs:
+        description: Whether to stage packages to npmjs (using `npm stage publish` for manual approval onsite) instead of performing a direct full publish
+        type: boolean
+        required: false
+        default: true
+
+      version_conflict_policy:
+        description: How to handle published versions that are equal to or greater than the workspace version
+        type: choice
+        required: false
+        options:
+          - fail
+          - patch
+          - minor
+          - major
+        default: patch
+
+      merge_pr:
+        description: Whether to auto-merge a generated version-bump pull request before continuing publish
+        type: boolean
+        required: false
+        default: true
+
+      npmjs_token:
+        description: Auth token for publishing to the npmjs registry. Required when any package targets the 'npmjs' registry.
+        type: string
+        required: false
+
+      npmrc_secrets:
+        description: Optional newline-delimited `KEY=VALUE` entries exposed to npm while installing publishable package dependencies
+        type: string
+        required: false
+
+      disable_prune_by_git_diff:
+        description: Whether to skip the prune-by-git-diff step
+        type: boolean
+        required: false
+        default: false
+
+      disable_prune_by_build_diff:
+        description: Whether to skip the prune-by-build-diff step
+        type: boolean
+        required: false
+        default: false
+
+      node_version:
+        description: Node.js version used for install, build, and publish steps
+        type: string
+        required: false
+        default: '26'
+
+  # Make workflow callable from other workflows.
+  # Also, must enable https://github.com/nad767/vite-plugin-mkcert-containerized/settings/actions#:~:text=Accessible%20from%20repositories%20owned%20by%20the%20user%20%27nad767%27.
+  workflow_call:
+    inputs:
+      registry:
+        description: "Default npm registry name or alias list for targets that omit `registry` (for example: 'ghp', 'npmjs', or 'ghp, npmjs')"
+        type: string
+        required: false
+        default: ghp
+
+      ghp_scope:
+        description: GitHub Packages scope to publish under. Tolerant to having/not-having '@' prefix. Defaults to '<repo-owner>'.
+        type: string
+        required: false
+
+      tag:
+        description: npm dist-tag to publish under
+        type: string
+        required: false
+        default: latest
+
+      stage_to_npmjs:
+        description: Whether to stage packages to npmjs (using `npm stage publish` for manual approval onsite) instead of performing a direct full publish
+        type: boolean
+        required: false
+        default: true
+
+      version_conflict_policy:
+        description: How to handle published versions that are equal to or greater than the workspace version
+        type: string
+        required: false
+        default: patch
+
+      merge_pr:
+        description: Whether to auto-merge a generated version-bump pull request before continuing publish
+        type: boolean
+        required: false
+        default: true
+
+      npmjs_token:
+        description: Auth token for publishing to the npmjs registry. Required when any package targets the 'npmjs' registry.
+        type: string
+        required: false
+
+      npmrc_secrets:
+        description: Optional newline-delimited `KEY=VALUE` entries exposed to npm while installing publishable package dependencies
+        type: string
+        required: false
+
+      disable_prune_by_git_diff:
+        description: Whether to skip the prune-by-git-diff step
+        type: boolean
+        required: false
+        default: false
+
+      disable_prune_by_build_diff:
+        description: Whether to skip the prune-by-build-diff step
+        type: boolean
+        required: false
+        default: false
+
+      node_version:
+        description: Node.js version used for install, build, and publish steps
+        type: string
+        required: false
+        default: '26'
+
+    secrets:
+      npmrc_secrets:
+        description: Optional newline-delimited `KEY=VALUE` entries exposed to npm while installing publishable package dependencies
+        required: false
+      npmjs_token:
+        description: Auth token for publishing to the npmjs registry. Required when any package targets the 'npmjs' registry.
+        required: false
+
+permissions:
+  contents: write # Required to create pull requests for version updates.
+  pull-requests: write # Likewise. Also, must enable https://github.com/nad767/vite-plugin-mkcert-containerized/settings/actions#:~:text=Allow%20GitHub%20Actions%20to%20create%20and%20approve%20pull%20requests.
+  packages: write # `read` is needed to install internal dependencies during the build stage. `write` is required to publish packages.
+
+jobs:
+  publish_npm_packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out target repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name || github.event.repository.default_branch }}
+
+      - name: Publish npm packages
+        uses: nad767/actions/publish-npm-packages@v1
+        with:
+          targets_json: '[{ "path": "packages/core", "registry": "ghp, npmjs" }]'
+          registry: ${{ inputs.registry }}
+          ghp_scope: ${{ inputs.ghp_scope }}
+          tag: ${{ inputs.tag }}
+          stage_to_npmjs: ${{ inputs.stage_to_npmjs }}
+          version_conflict_policy: ${{ inputs.version_conflict_policy }}
+          merge_pr: ${{ inputs.merge_pr }}
+          npmjs_token: ${{ secrets.NPMJS_TOKEN || inputs.npmjs_token }}
+          npmrc_secrets: ${{ secrets.NPMRC_SECRETS || inputs.npmrc_secrets }}
+          disable_prune_by_git_diff: ${{ inputs.disable_prune_by_git_diff }}
+          disable_prune_by_build_diff: ${{ inputs.disable_prune_by_build_diff }}
+          node_version: ${{ inputs.node_version }}

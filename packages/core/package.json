@@ -1,0 +1,71 @@
+{
+    "name": "vite-plugin-mkcert-containerized",
+    "version": "0.1.0",
+    "description": "Drop-in replacement for vite-plugin-mkcert that eases trusting mkcert's CA on the host machine when running Vite in a container.",
+    "keywords": [
+        "vite",
+        "vite-plugin",
+        "mkcert",
+        "ssl",
+        "https",
+        "devcontainer",
+        "container",
+        "docker"
+    ],
+    "homepage": "https://github.com/nad767/vite-plugin-mkcert-containerized#readme",
+    "bugs": {
+        "url": "https://github.com/nad767/vite-plugin-mkcert-containerized/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nad767/vite-plugin-mkcert-containerized.git"
+    },
+    "license": "BSD-3-Clause",
+    "author": "nad767",
+    "sideEffects": false,
+    "type": "module",
+    "imports": {
+        "#src/*": "./src/*"
+    },
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "import": "./index.js",
+            "default": "./index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./index.js",
+    "types": "./index.d.ts",
+    "files": [
+        "README.md",
+        "LICENSE",
+        "index.js",
+        "index.d.ts",
+        "src"
+    ],
+    "scripts": {
+        "prepack": "node -e \"import('node:fs').then(fs => { fs.copyFileSync('../../README.md', './README.md'); fs.copyFileSync('../../LICENSE', './LICENSE'); });\"",
+        "postpack": "node -e \"import('node:fs').then(fs => { fs.rmSync('./README.md', { force: true }); fs.rmSync('./LICENSE', { force: true }); });\"",
+        "test": "node --test"
+    },
+    "dependencies": {
+        "fflate": "^0.8.3",
+        "vite-plugin-mkcert": "^2.1.0"
+    },
+    "peerDependencies": {
+        "vite": ">=3"
+    },
+    "peerDependenciesMeta": {
+        "vite": {
+            "optional": false
+        }
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org"
+    }
+}

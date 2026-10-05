@@ -1,0 +1,117 @@
+:root {
+    --bg: #fafafa;
+    --card-bg: #ffffff;
+    --text: #171717;
+    --text-muted: #737373;
+    --border: #e5e5e5;
+    --focus-ring: rgba(0, 0, 0, 0.25);
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0a0a0a;
+        --card-bg: #141414;
+        --text: #ededed;
+        --text-muted: #a1a1aa;
+        --border: #262626;
+        --focus-ring: rgba(255, 255, 255, 0.25);
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+#app {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 10;
+}
+
+.card {
+    position: relative;
+    z-index: 10;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    transform-origin: center center;
+    transition: box-shadow 0.15s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card:focus-visible {
+    outline: 1.5px solid var(--focus-ring);
+    outline-offset: 0;
+}
+
+.card.card-collapse {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(0.95) !important;
+}
+
+h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Easter Egg Particle Effects */
+.easter-egg-particle-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.easter-egg-particle {
+    position: fixed;
+    font-size: 24px;
+    transform: translate(-50%, -50%) scale(var(--particle-scale, 1));
+    animation: easter-egg-ooze cubic-bezier(0.12, 0.8, 0.32, 1) forwards;
+}
+
+@keyframes easter-egg-ooze {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(-50% + var(--delta-x, 0px)), calc(-50% + var(--delta-y, 0px))) scale(var(--particle-scale, 1)) rotate(var(--particle-rotation, 180deg));
+        opacity: 0;
+    }
+}

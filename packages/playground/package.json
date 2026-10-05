@@ -1,0 +1,14 @@
+{
+    "name": "playground",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "node --watch-path=../core/src --watch-path=../core/index.js --watch-path=../core/index.d.ts --watch-path=../core/package.json ../../node_modules/vite/bin/vite.js",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "vite": "^8.0.0",
+        "vite-plugin-mkcert-containerized": "*"
+    }
+}

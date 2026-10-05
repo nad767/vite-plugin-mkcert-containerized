@@ -1,0 +1,23 @@
+{
+    "name": "vite-plugin-mkcert-containerized-monorepo",
+    "type": "module",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "npm run build -w playground --no-include-workspace-root",
+        "dev": "npm run dev -w playground --no-include-workspace-root",
+        "lint": "eslint",
+        "lint:fix": "eslint --fix",
+        "preview": "npm run preview -w playground --no-include-workspace-root",
+        "test": "npm test -w vite-plugin-mkcert-containerized --no-include-workspace-root"
+    },
+    "devDependencies": {
+        "@nad767/agents": "0.0.3",
+        "@nad767/eslint-config": "0.0.34"
+    },
+    "allowScripts": {
+        "@nad767/agents": true,
+        "@nad767/eslint-config": true
+    }
+}
